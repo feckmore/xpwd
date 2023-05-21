@@ -1,13 +1,21 @@
 package domain
 
-// domain package
-type RandomWordGenerator interface {
+type Generator interface {
 	GenerateRandomWord(maxWordLength int) string
+}
+
+// domain package
+type Service interface {
+	GenerateRandomWords(wordCount, maxWordLength int) []string
 }
 
 // usecase package
 type RandomWordUsecase struct {
-	Generator RandomWordGenerator
+	Generator
+}
+
+func New(generator Generator) Service {
+	return &RandomWordUsecase{generator}
 }
 
 func (u *RandomWordUsecase) GenerateRandomWords(wordCount, maxWordLength int) []string {

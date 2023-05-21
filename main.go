@@ -16,8 +16,8 @@ func main() {
 	app.Name = "xpwd"
 	app.Usage = "Suggest passwords in the style of XKCD"
 	app.Action = func(c *cli.Context) {
-		dictionary := mac.New()
-		usecase := &domain.RandomWordUsecase{Generator: dictionary}
+		generator := mac.New()
+		usecase := domain.New(generator)
 
 		fmt.Println(strings.Join(usecase.GenerateRandomWords(4, 0), " "))
 	}

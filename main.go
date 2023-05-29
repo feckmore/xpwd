@@ -8,6 +8,7 @@ import (
 	"github.com/urfave/cli"
 
 	"github.com/feckmore/xpwd/dictionary/oxford"
+	"github.com/feckmore/xpwd/dictionary/system/mac"
 	"github.com/feckmore/xpwd/domain"
 )
 
@@ -31,17 +32,30 @@ func main() {
 			Value: 11,
 			Usage: "maximum word length",
 		},
+		cli.StringFlag{
+			Name:  "dictionary, d",
+			Value: "oxford",
+			Usage: "dictionary to use",
+		},
 	}
 	app.Action = func(c *cli.Context) {
-		passphrase(c.Int("count"), c.Int("min"), c.Int("max"))
+		passphrase(
+			c.String("dictionary"),
+			c.Int("count"),
+			c.Int("min"),
+			c.Int("max"),
+		)
 	}
 
 	app.Run(os.Args)
 }
 
-func passphrase(wordCount, minWordLength, maxWordLength int) {
-	// generator, err := mac.New(minWordLength, maxWordLength)
-	generator, err := oxford.New(minWordLength, maxWordLength)
+func passphrase(dictionary string, wordCount, minWordLength, maxWordLength int) {
+	dictionaries := map[string]func(int, int) (domain.Generator, error){
+		"oxford": oxford.New,
+		"mac":    mac.New,
+	}
+	generator, err := dictionaries[dictionary](minWordLength, maxWordLength)
 
 	if err != nil {
 		log.Fatalf("Error creating dictionary: %v", err)

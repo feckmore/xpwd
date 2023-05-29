@@ -1,6 +1,9 @@
 package domain
 
-import "errors"
+import (
+	"errors"
+	"strings"
+)
 
 var ErrInvalidWordLength = errors.New("invalid word length")
 var ErrNotEnoughWords = errors.New("insufficient available words")
@@ -10,28 +13,28 @@ type Generator interface {
 	GenerateRandomWord() string
 }
 
-// Service is the interface that provides the GenerateRandomWords method
+// Service is the interface that provides the Passphrase method
 type Service interface {
-	GenerateRandomWords(wordCount int) []string
+	Passphrase(wordCount int) string
 }
 
-// RandomWordUsecase is a concrete implementation of the Service interface
-type RandomWordUsecase struct {
+// service is a concrete implementation of the Service interface
+type service struct {
 	Generator
 }
 
-// New returns a new RandomWordUsecase that fulfills the Service interface
+// New returns a new service implementation that fulfills the Service interface
 func New(generator Generator) Service {
-	return &RandomWordUsecase{generator}
+	return &service{generator}
 }
 
-// GenerateRandomWords returns a slice of random words
-func (u *RandomWordUsecase) GenerateRandomWords(wordCount int) []string {
+// Passphrase returns a slice of random words
+func (u *service) Passphrase(wordCount int) string {
 	var randomWords []string
 	for index := 0; index < wordCount; index++ {
 		randomWord := u.Generator.GenerateRandomWord()
 		randomWords = append(randomWords, randomWord)
 	}
 
-	return randomWords
+	return strings.Join(randomWords, " ")
 }

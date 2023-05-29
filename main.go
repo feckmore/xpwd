@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"strings"
 
 	"github.com/urfave/cli"
 
@@ -13,20 +12,32 @@ import (
 )
 
 func main() {
-	// generator, err := mac.New(4, 8)
-	generator, err := oxford.New(6, 11)
+	app := cli.NewApp()
+	app.Name = "xpwd"
+	app.Usage = "Suggest passwords in the style of XKCD"
+	app.Flags = []cli.Flag{
+		cli.IntFlag{
+			Name:  "count, c",
+			Value: 4,
+			Usage: "number of words in the passphrase",
+		},
+	}
+	app.Action = func(c *cli.Context) {
+		count := c.Int("count")
+		passphrase(count, 6, 11)
+	}
+
+	app.Run(os.Args)
+}
+
+func passphrase(wordCount, minWordLength, maxWordLength int) {
+	// generator, err := mac.New(minWordLength, maxWordLength)
+	generator, err := oxford.New(minWordLength, maxWordLength)
 
 	if err != nil {
 		log.Fatalf("Error creating dictionary: %v", err)
 	}
-	usecase := domain.New(generator)
+	service := domain.New(generator)
 
-	app := cli.NewApp()
-	app.Name = "xpwd"
-	app.Usage = "Suggest passwords in the style of XKCD"
-	app.Action = func(c *cli.Context) {
-		fmt.Println(strings.Join(usecase.GenerateRandomWords(4), " "))
-	}
-
-	app.Run(os.Args)
+	fmt.Println(service.Passphrase(wordCount))
 }

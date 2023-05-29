@@ -16,11 +16,12 @@ Here is the original [XKCD Password Strength Comic](http://xkcd.com/936/)
 - `-d`, `--dictionary`
   - dictionary to use [`oxford` (default) | `mac`]`
 - `-c`, `--count`
-  - number of words in the passphrase (default 4)
+  - number of words in the passphrase (default 4, minimum 1)
 - `-m`, `--min` 
   - minimum word length (default 6)
 - `-x`, `--max`
-  - maximum word length (default 11)
+  - maximum word length (default 11, maximum 16)
+  - setting maximum word length to 0, defaults to 16
 
 ### Examples
 - Three word passphrase from the Mac system dictionary 

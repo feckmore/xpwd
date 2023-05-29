@@ -18,6 +18,10 @@ func New(minGeneratedWordLength, maxGeneratedWordLength int) (domain.Generator, 
 		return nil, domain.ErrInvalidWordLength
 	}
 
+	if maxGeneratedWordLength < 0 {
+		return nil, domain.ErrInvalidWordLength
+	}
+
 	maxPossibleWordLength := len(wordLengthIndices) - 1
 	if minGeneratedWordLength > maxPossibleWordLength || maxGeneratedWordLength > maxPossibleWordLength {
 		return nil, domain.ErrInvalidWordLength

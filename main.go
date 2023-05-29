@@ -51,6 +51,7 @@ func main() {
 }
 
 func passphrase(dictionary string, wordCount, minWordLength, maxWordLength int) {
+	log.SetFlags(0)
 	dictionaries := map[string]func(int, int) (domain.Generator, error){
 		"oxford": oxford.New,
 		"mac":    mac.New,

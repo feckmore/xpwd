@@ -14,7 +14,7 @@ Here is the original [XKCD Password Strength Comic](http://xkcd.com/936/)
 ### Options
 
 - `-d`, `--dictionary`
-  - dictionary to use [`oxford` (default) | `mac`]`
+  - dictionary to use [`oxford` (default) | `mac`]
 - `-c`, `--count`
   - number of words in the passphrase (default 4, minimum 1)
 - `-m`, `--min` 

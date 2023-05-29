@@ -30,7 +30,6 @@ func New(minWordLength, maxWordLength int) (domain.Generator, error) {
 
 // GenerateRandomWord returns a random word from the local system dictionary
 func (d *dictionary) GenerateRandomWord() string {
-	words := append(append(append(append(append([]Word{}, wordsA1...), wordsA2...), wordsB1...), wordsB2...), wordsC1...)
 	word := Word{}
 	wordFound := false
 	for !wordFound {

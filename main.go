@@ -14,7 +14,7 @@ import (
 
 func main() {
 	// generator, err := mac.New(4, 8)
-	generator, err := oxford.New(4, 9)
+	generator, err := oxford.New(6, 9)
 
 	if err != nil {
 		log.Fatalf("Error creating dictionary: %v", err)

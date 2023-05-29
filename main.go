@@ -21,10 +21,19 @@ func main() {
 			Value: 4,
 			Usage: "number of words in the passphrase",
 		},
+		cli.IntFlag{
+			Name:  "min, m",
+			Value: 6,
+			Usage: "minimum word length",
+		},
+		cli.IntFlag{
+			Name:  "max, x",
+			Value: 11,
+			Usage: "maximum word length",
+		},
 	}
 	app.Action = func(c *cli.Context) {
-		count := c.Int("count")
-		passphrase(count, 6, 11)
+		passphrase(c.Int("count"), c.Int("min"), c.Int("max"))
 	}
 
 	app.Run(os.Args)

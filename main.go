@@ -8,12 +8,14 @@ import (
 
 	"github.com/urfave/cli"
 
-	"github.com/feckmore/xpwd/dictionary/system/mac"
+	"github.com/feckmore/xpwd/dictionary/oxford"
 	"github.com/feckmore/xpwd/domain"
 )
 
 func main() {
-	generator, err := mac.New(4, 8)
+	// generator, err := mac.New(4, 8)
+	generator, err := oxford.New(4, 9)
+
 	if err != nil {
 		log.Fatalf("Error creating dictionary: %v", err)
 	}

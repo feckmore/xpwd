@@ -16,8 +16,8 @@ import (
 // the dictionary is a list of words, one per line, that contains approx 235,000 words
 const MAC_OS_LOCAL_SYSTEM_DICTIONARY_PATH = "/usr/share/dict/words"
 
-// Dictionary is a concrete implementation of the Generator interface
-type Dictionary struct {
+// dictionary is a concrete implementation of the Generator interface
+type dictionary struct {
 	MaxWordLength int
 	MinWordLength int
 	Path          string
@@ -33,7 +33,7 @@ func New(minWordLength, maxWordLength int) (domain.Generator, error) {
 		return nil, domain.ErrInvalidWordLength
 	}
 
-	return &Dictionary{
+	return &dictionary{
 		MaxWordLength: maxWordLength,
 		MinWordLength: minWordLength,
 		Path:          MAC_OS_LOCAL_SYSTEM_DICTIONARY_PATH,
@@ -41,7 +41,7 @@ func New(minWordLength, maxWordLength int) (domain.Generator, error) {
 }
 
 // GenerateRandomWord returns a random word from the local system dictionary
-func (d *Dictionary) GenerateRandomWord() string {
+func (d *dictionary) GenerateRandomWord() string {
 	word := ""
 	wordFound := false
 	for !wordFound {

@@ -47,3 +47,31 @@ func TestGenerateRandomWord(t *testing.T) {
 		})
 	}
 }
+
+func BenchmarkGenerateRandomWord(b *testing.B) {
+	table := []struct {
+		min int
+		max int
+	}{
+		{1, 16},
+		{4, 8},
+		{8, 12},
+		{10, 16},
+	}
+
+	for _, v := range table {
+		b.Run(fmt.Sprintf("min_%d_max_%d", v.min, v.max), func(b *testing.B) {
+			generator, err := New(v.min, v.max)
+			if err != nil {
+				b.Fatalf("New(%d, %d) returned error: %v", v.min, v.max, err)
+			}
+			if generator == nil {
+				b.SkipNow()
+			}
+
+			for i := 0; i < b.N; i++ {
+				generator.GenerateRandomWord()
+			}
+		})
+	}
+}

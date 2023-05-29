@@ -3,6 +3,7 @@ package domain
 import "errors"
 
 var ErrInvalidWordLength = errors.New("invalid word length")
+var ErrNotEnoughWords = errors.New("insufficient available words")
 
 // Generator is the interface that wraps the GenerateRandomWord method
 type Generator interface {

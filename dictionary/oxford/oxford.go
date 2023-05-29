@@ -9,42 +9,51 @@ import (
 
 // dictionary is a concrete implementation of the Generator interface
 type dictionary struct {
-	MaxWordLength int
-	MinWordLength int
+	maxIndex int
+	minIndex int
 }
 
-func New(minWordLength, maxWordLength int) (domain.Generator, error) {
-	if minWordLength < 3 {
-		minWordLength = 3
-	}
-
-	if maxWordLength > 0 && minWordLength > maxWordLength {
+func New(minGeneratedWordLength, maxGeneratedWordLength int) (domain.Generator, error) {
+	if maxGeneratedWordLength > 0 && minGeneratedWordLength > maxGeneratedWordLength {
 		return nil, domain.ErrInvalidWordLength
 	}
 
+	maxPossibleWordLength := len(wordLengthIndices) - 1
+	if minGeneratedWordLength > maxPossibleWordLength || maxGeneratedWordLength > maxPossibleWordLength {
+		return nil, domain.ErrInvalidWordLength
+	}
+
+	minIndex := 0
+	maxIndex := len(words) - 1
+
+	minIndex = wordLengthIndices[minGeneratedWordLength]
+	if maxGeneratedWordLength > 0 && maxGeneratedWordLength < maxPossibleWordLength {
+		maxIndex = wordLengthIndices[maxGeneratedWordLength+1]
+	}
+
+	availableWords := maxIndex - minIndex + 1
+	if availableWords < 500 {
+		return nil, domain.ErrNotEnoughWords
+	}
+
 	return &dictionary{
-		MaxWordLength: maxWordLength,
-		MinWordLength: minWordLength,
+		maxIndex: maxIndex,
+		minIndex: minIndex,
 	}, nil
 }
 
 // GenerateRandomWord returns a random word from the local system dictionary
 func (d *dictionary) GenerateRandomWord() string {
 	word := Word{}
-	wordFound := false
-	for !wordFound {
-		// seed rand function for each new word selected
-		source := rand.NewSource(time.Now().UnixNano())
-		seededRand := rand.New(source)
-		// choose a random line number to select a word from the dictionary
-		// randomLinePosition := strconv.Itoa(seededRand.Intn(totalWords))
-		index := seededRand.Intn(len(words))
-		word = words[index]
 
-		wordFound = len(word.Word) >= d.MinWordLength && (d.MaxWordLength == 0 || len(word.Word) <= d.MaxWordLength)
-	}
+	// seed rand function for each new word selected
+	source := rand.NewSource(time.Now().UnixNano())
+	seededRand := rand.New(source)
+
+	// select ramdom word from dictionary within the min and max index
+	availableWords := d.maxIndex - d.minIndex + 1
+	index := d.minIndex + seededRand.Intn(availableWords)
+	word = words[index]
 
 	return word.Word
 }
-
-// internal
